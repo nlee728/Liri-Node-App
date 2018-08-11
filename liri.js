@@ -2,16 +2,14 @@
 require("dotenv").config();
 var keys = require("./keys.js");
 var twitter = require("twitter");
-var spotifyAPI = require("node-spotify-api");
+var spotify = require("node-spotify-api");
 var request = require("request");
-var fs = require('fs');
+var fs = require("fs");
 
 
 //saves user inputs for command into variable
 var command = process.argv[2];
-
-
-var log = "./log.txt";
+var log = "C:\Users\Nutishia\Desktop\coursework\github\Homework\Liri-Node-App\log.txt"
 
 // node liri.js my-tweets
 // This will show your last 20 tweets and when they were created in your terminal/bash window.
@@ -71,7 +69,7 @@ function getSong() {
     var song = process.argv[3];
 
      // Append the command to the log file
-	fs.appendFile("./log.txt", "User Command: node liri.js spotify-this-song\n\n", (err) => {
+	fs.appendFile("./log.txt", "User Command: node liri.js spotify-this-song\n\n", function(err) {
         if (err) throw err;
         else {
             console.log("Command logged");
@@ -100,7 +98,7 @@ function getMovie() {
     var movie = process.argv[3];
 
      // Append the command to the log file
-	fs.appendFile("./log.txt", "User Command: node liri.js movie-this\n\n", (err) => {
+	fs.appendFile("./log.txt", "User Command: node liri.js movie-this\n\n", function(err) {
         if (err) throw err;
         else {
             console.log("Command logged");
@@ -117,7 +115,7 @@ function doIt() {
     console.log("Command: " + command);
 
      // Append the command to the log file
-	fs.appendFile("./log.txt", "User Command: node liri.js do-what-it-says\n\n", (err) => {
+	fs.appendFile("./log.txt", "User Command: node liri.js do-what-it-says\n\n", function(err) {
         if (err) throw err;
         else {
             console.log("Command logged");
@@ -127,7 +125,7 @@ function doIt() {
 }
 
 
-// Run the requested command
+// Run the commands
 if (command === "my-tweets") {
 	getTweets(); 
 
@@ -142,21 +140,20 @@ if (command === "my-tweets") {
 
 } else {
 	// Append the command to the log file
-	fs.appendFile('./log.txt', 'User Command: ' + command + '\n\n', (err) => {
+	fs.appendFile('./log.txt', 'User Command: ' + command + '\n\n', function(err) {
 		if (err) throw err;
 
-		// If the user types in a command that LIRI does not recognize, output the Usage menu 
-		// which lists the available commands.
-		outputStr = 'Usage:\n' + 
+		// If the user types in something other than a command, provide a list of instructions
+		commandList = 'Command List:\n' + 
 				   '    node liri.js my-tweets\n' + 
 				   '    node liri.js spotify-this-song "<song_name>"\n' + 
 				   '    node liri.js movie-this "<movie_name>"\n' + 
 				   '    node liri.js do-what-it-says\n';
 
 		// Append the output to the log file
-		fs.appendFile('./log.txt', 'LIRI Response:\n\n' + outputStr + '\n', (err) => {
+		fs.appendFile('./log.txt', 'LIRI Response:\n\n' + commandList + '\n', function(err) {
 			if (err) throw err;
-			console.log(outputStr);
+			console.log(commandList);
 		});
 	});
 }
