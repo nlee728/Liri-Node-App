@@ -1,26 +1,32 @@
-User Command: my=tweets
 
-LIRI Response:
 
-To use:
-    node liri.js my-tweets
-    node liri.js spotify-this-song "<song_name>"
-    node liri.js movie-this "<movie_name>"
-    node liri.js do-what-it-says
+_____________________________
+Command: my-tweets
+Response: Your Tweets: 
+Tweets:
+Created on: Thu Aug 09 01:03:39 +0000 2018
+Tweet content: Wednesday, we meet again.
+------------------------
 
-User Command: node liri.js do-what-it-says
 
-User Command: node liri.js do-what-it-says
+_____________________________
+Command: movie-this despicable+me
+Response: Title: Despicable Me
+Year: 2010
+IMDB Rating: undefined
+Rotten Tomatoes Rating: [object Object]
+Country: USA, France
+Language: English
+Plot: When a criminal mastermind uses a trio of orphan girls as pawns for a grand scheme, he finds their love is profoundly changing him for the better.
+Actors: Steve Carell, Jason Segel, Russell Brand, Julie Andrews
 
-User Command: node liri.js movie-this
+_____________________________
+Command: movie-this 
 
-User Command: spotif-this-song
-
-LIRI Response:
-
-Command List:
-    node liri.js my-tweets
-    node liri.js spotify-this-song "<song_name>"
-    node liri.js movie-this "<movie_name>"
-    node liri.js do-what-it-says
-
+_____________________________
+Command: spotify-this-song
+superbass
+_____________________________
+Command: spotify-this-song superbass
+_____________________________
+Command: spotify-this-song superbass

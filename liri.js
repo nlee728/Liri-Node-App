@@ -1,111 +1,167 @@
 // Load required files and packages
 require("dotenv").config();
 var keys = require("./keys.js");
-var twitter = require("twitter");
+var Twitter = require("twitter");
 var spotify = require("node-spotify-api");
 var request = require("request");
 var fs = require("fs");
 
+//Loads Twitter and Spotify keys
+var spotify = keys.spotify;
+var twitter = keys.twitter;
 
-//saves user inputs for command into variable
-var command = process.argv[2];
-var log = "C:\Users\Nutishia\Desktop\coursework\github\Homework\Liri-Node-App\log.txt"
+//Saves user inputs for command into a variable
+var command = process.argv;
 
 // node liri.js my-tweets
-// This will show your last 20 tweets and when they were created in your terminal/bash window.
+// This will show your last 20 tweets and when they were created in the terminal/bash window
 function getTweets() {
 
     console.log("Command: " + command);
     // Append the command to the log file
-	fs.appendFile(log, "User Command: node liri.js my-tweets", function(err) {
+	fs.appendFile("./log.txt", "\n_____________________________\n" + "Command: my-tweets" + "\n", function(err) {
         if (err) throw err;
         else {
-            console.log("Command logged");
+            console.log("Tweet Command logged");
         }
     });
 
+    //Initialize Twitter client and access correct twitter handle
     var client = new Twitter(keys.twitter);
-    var params = {screen_name: 'mzlee728', count: 20};
+    var params = {screen_name: "mzlee728", count: 20};
 
+    //Retrieve tweets
     client.get("statuses/user_timeline", params, function(error, tweets, response) {
       if (error) {
         console.log("Sorry! Could not retrieve tweets.");
       } else {
+
+        //Loop through and print tweets
+        var output = "Your Tweets: \n"
         for (var i = 0; i < tweets.length; i++) {
-                                         "Tweets:\n" + "Created on: " + tweets[i].created_at +
+
+                                output+=  "Tweets:\n" + "Created on: " + tweets[i].created_at +
                                          "\n" + 
             							 "Tweet content: " + tweets[i].text + "\n" +
             							 "------------------------\n";
         }
 
+        // Append the output to the log file
+		fs.appendFile("./log.txt", "Response: " + output + "\n", function(err) {
+            if (err) throw err;
+            else {
+                console.log("Tweet Response logged" + "\n_____________________________\n");
+            }
+                
+			});
       }
     });
-
-
-
 }
 
-// 			// Append the output to the log file
-// 			fs.appendFile('./log.txt', 'LIRI Response:\n\n' + outputStr + '\n', (err) => {
-// 				if (err) throw err;
-// 				console.log(outputStr);
-// 			});
-// 		}
-// 	});
-// }
-
-
-
 // node liri.js spotify-this-song '<song name here>'
-// This will show the following information about the song in your terminal/bash window
+// This will show information about the song in the terminal/bash window
 // Artist(s)
 // The song's name
 // A preview link of the song from Spotify
 // The album that the song is from
 // If no song is provided then your program will default to "The Sign" by Ace of Base.
-// You will utilize the node-spotify-api package in order to retrieve song information from the Spotify API.
 function getSong() {
     console.log("Command: " + command);
     var song = process.argv[3];
 
      // Append the command to the log file
-	fs.appendFile("./log.txt", "User Command: node liri.js spotify-this-song\n\n", function(err) {
+	fs.appendFile("./log.txt", "\n_____________________________\n" + "Command: spotify-this-song " + song, function(err) {
         if (err) throw err;
         else {
-            console.log("Command logged");
+            console.log("Song Command logged");
         }
     });
 
-    var spotify = new Spotify(keys.spotify);
+    if (song === "") {
+        var spotifySearch = "The Sign of Base";
+    } else {
+        spotifySearch = song;
+        return;
+    }
+    spotify.search({type: "track", query: spotifySearch}, function(err, response) {
+        if (err) {
+            console.log("Sorry! Could not retrieve the track.");
+          } else {
+              console.log("Spotify response: " + response);
+              var songInfo = response.tracks.items[0];
+              var output = "Song Information:\n" +  
+                                    "Song Name: " + songInfo.name + "\n" + 
+                                    "Artist: " + songInfo.artists[0].name + "\n" + 
+                                    "Album: " + songInfo.album.name + "\n" + 
+                                    "Preview Here: " + songInfo.preview_url + "\n";
+            // Append the output to the log file
+            fs.appendFile("./log.txt", "Response: " + output + "\n", function(err) {
+                if (err) throw err;
+                else {
+                    console.log("Song Response logged" + "\n_____________________________\n");
+                }
+          })
+        }
+    });
+    
 }
 
 // node liri.js movie-this '<movie name here>'
-// This will output the following information to your terminal/bash window:
-//    * Title of the movie.
-//    * Year the movie came out.
-//    * IMDB Rating of the movie.
-//    * Rotten Tomatoes Rating of the movie.
-//    * Country where the movie was produced.
-//    * Language of the movie.
-//    * Plot of the movie.
-//    * Actors in the movie.
-// If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
-// If you haven't watched "Mr. Nobody," then you should: http://www.imdb.com/title/tt0485947/
-// It's on Netflix!
-// You'll use the request package to retrieve data from the OMDB API. Like all of the in-class activities, the OMDB API requires an API key. You may use trilogy.
+// This will show information about the movie in the terminal/bash window
 function getMovie() {
-    console.log("Command: " + command);
-    var movie = process.argv[3];
+    // Create an empty variable for holding the movie name
+    var movieName = "";
+    
+    // Loop through all the words in the node argument and add to the movieName variable
+    for (var i = 3; i < command.length; i++) {
+      if (i > 3 && i < command.length) {
+        movieName = movieName + "+" + command[i];
+      }
+      else {
+        movieName += command[i];
+      }
+    }
 
      // Append the command to the log file
-	fs.appendFile("./log.txt", "User Command: node liri.js movie-this\n\n", function(err) {
+	fs.appendFile("./log.txt", "\n_____________________________\n" + "Command: movie-this " + movieName + "\n", function(err) {
         if (err) throw err;
         else {
-            console.log("Command logged");
+            console.log("Movie Command logged");
         }
     });
-}
 
+    
+    var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+    
+    // Sends a request to the OMDB Movie API
+    request(queryUrl, function(error, response, body) {
+
+  // If the request is successful (i.e. if the response status code is 200)
+    if (!error && response.statusCode === 200) {
+        if(movieName === "") {
+            var movieName = "Mr. Nobody";
+        }
+                // Parse the body of the site and retrieve the movie information
+                var parsedBody = JSON.parse(body);
+                var output = "Title: " + parsedBody.Title +
+                "\nYear: " + parsedBody.Year +
+                "\nIMDB Rating: " + parsedBody.imbdRating +
+                "\nRotten Tomatoes Rating: " + parsedBody.Ratings[1] + 
+                "\nCountry: " + parsedBody.Country +
+                "\nLanguage: " + parsedBody.Language +
+                "\nPlot: " + parsedBody.Plot +
+                "\nActors: " + parsedBody.Actors
+                console.log(output)
+                }
+
+    fs.appendFile("./log.txt", "Response: " + output + "\n", function(err) {
+        if (err) throw err;
+        else {
+            console.log("Movie Response logged" + "\n_____________________________\n");
+        }
+    });
+});
+}
 
 // node liri.js do-what-it-says
 // Using the fs Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
@@ -121,21 +177,27 @@ function doIt() {
             console.log("Command logged");
         }
     });
-    
+
+    //Read the random.txt file and run the command
+    fs.readFile("./random.txt", "utf8", function(err, data) {
+        if (err) throw err;
+    else {
+        var command = data;
+    }
+    })    
 }
 
-
 // Run the commands
-if (command === "my-tweets") {
+if (command[2] === "my-tweets") {
 	getTweets(); 
 
-} else if (command === "spotify-this-song") {
+} else if (command[2] === "spotify-this-song") {
 	getSong();
 
-} else if (command === "movie-this") {
+} else if (command[2] === "movie-this") {
 	getMovie();
 
-} else if (command ===  "do-what-it-says") {
+} else if (command[2] ===  "do-what-it-says") {
 	doIt();
 
 } else {
