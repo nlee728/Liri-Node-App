@@ -92,7 +92,6 @@ function getSong(query) {
         if (error) {
             console.log("Sorry! Could not retrieve the track.");
           } else {
-              console.log("Spotify response: " + response);
               var songInfo = response.tracks.items[0];
               var output = "Song Information:\n" +  
                                     "Song Name: " + songInfo.name + "\n" + 
@@ -104,7 +103,7 @@ function getSong(query) {
             fs.appendFile("./log.txt", "Response: " + output + "\n", function(error) {
                 if (error) throw error;
                 else {
-                    console.log("Spotify Response logged" + "\n_____________________________\n");
+                    console.log("Spotify Response logged" + output + "\n_____________________________\n");
                 }
           })
         }
