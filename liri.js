@@ -122,11 +122,17 @@ function getMovie() {
       }
     }
 
+    //If no movie is defined, set the movieName to Mr. Nobody
+    if(movieName === "") {
+        var movieName = "mr+nobody";
+    }
+
      // Append the command to the log file
 	fs.appendFile("./log.txt", "\n_____________________________\n" + "Command: movie-this " + movieName + "\n", function(err) {
         if (err) throw err;
         else {
             console.log("Movie Command logged");
+           // console.log("Movie Name: " + movieName);
         }
     });
 
@@ -138,15 +144,15 @@ function getMovie() {
 
   // If the request is successful (i.e. if the response status code is 200)
     if (!error && response.statusCode === 200) {
-        if(movieName === "") {
-            var movieName = "Mr. Nobody";
-        }
+       
                 // Parse the body of the site and retrieve the movie information
                 var parsedBody = JSON.parse(body);
+                //console.log(parsedBody);
+
                 var output = "Title: " + parsedBody.Title +
                 "\nYear: " + parsedBody.Year +
-                "\nIMDB Rating: " + parsedBody.imbdRating +
-                "\nRotten Tomatoes Rating: " + parsedBody.Ratings[1] + 
+                "\nIMDB Rating: " + parsedBody.imdbRating +
+                "\nRotten Tomatoes Rating: " + parsedBody.Ratings[1].Value + 
                 "\nCountry: " + parsedBody.Country +
                 "\nLanguage: " + parsedBody.Language +
                 "\nPlot: " + parsedBody.Plot +
