@@ -2,7 +2,7 @@
 require("dotenv").config();
 var keys = require("./keys.js");
 var Twitter = require("twitter");
-var spotify = require("node-spotify-api");
+var Spotify = require("node-spotify-api");
 var request = require("request");
 var fs = require("fs");
 
@@ -13,14 +13,11 @@ var twitter = keys.twitter;
 //Saves user inputs for command into a variable
 var command = process.argv;
 
-// node liri.js my-tweets
 // This will show your last 20 tweets and when they were created in the terminal/bash window
 function getTweets() {
-
-    console.log("Command: " + command);
     // Append the command to the log file
-	fs.appendFile("./log.txt", "\n_____________________________\n" + "Command: my-tweets" + "\n", function(err) {
-        if (err) throw err;
+	fs.appendFile("./log.txt", "\n_____________________________\n" + "Command: my-tweets" + "\n", function(error) {
+        if (error) throw error;
         else {
             console.log("Tweet Command logged");
         }
@@ -31,24 +28,25 @@ function getTweets() {
     var params = {screen_name: "mzlee728", count: 20};
 
     //Retrieve tweets
-    client.get("statuses/user_timeline", params, function(error, tweets, response) {
-      if (error) {
+    client.get("statuses/user_timeline", params, function(erroror, tweets, response) {
+      if (erroror) {
         console.log("Sorry! Could not retrieve tweets.");
       } else {
 
         //Loop through and print tweets
-        var output = "Your Tweets: \n"
+        var output = "Most Recent Tweets: \n"
         for (var i = 0; i < tweets.length; i++) {
 
-                                output+=  "Tweets:\n" + "Created on: " + tweets[i].created_at +
+                                output+= "Tweet: " + tweets[i].text +
                                          "\n" + 
-            							 "Tweet content: " + tweets[i].text + "\n" +
-            							 "------------------------\n";
+                                         "Created: " + tweets[i].created_at + "\n" +
+                                         "------------------------\n";
+            console.log(output);
         }
 
         // Append the output to the log file
-		fs.appendFile("./log.txt", "Response: " + output + "\n", function(err) {
-            if (err) throw err;
+		fs.appendFile("./log.txt", "Response: " + output + "\n", function(error) {
+            if (error) throw error;
             else {
                 console.log("Tweet Response logged" + "\n_____________________________\n");
             }
@@ -58,33 +56,40 @@ function getTweets() {
     });
 }
 
-// node liri.js spotify-this-song '<song name here>'
 // This will show information about the song in the terminal/bash window
-// Artist(s)
-// The song's name
-// A preview link of the song from Spotify
-// The album that the song is from
-// If no song is provided then your program will default to "The Sign" by Ace of Base.
-function getSong() {
-    console.log("Command: " + command);
-    var song = process.argv[3];
+function getSong(query) {
+     // Create an empty variable for holding the song name
+     var song = "";
+    
+     // Loop through all the words in the node argument and add to the movieName variable
+     for (var i = 3; i < command.length; i++) {
+       if (i > 3 && i < command.length) {
+         song = song + "+" + command[i];
+       }
+       else {
+         song += command[i];
+       }
+     }
+ 
+     //If no song is defined, set the song to The Sign by Ace of Base
+     if(song === "") {
+         var song = "The Sign Ace of Base";
+     }
+    console.log("Song: " + song);
 
      // Append the command to the log file
-	fs.appendFile("./log.txt", "\n_____________________________\n" + "Command: spotify-this-song " + song, function(err) {
-        if (err) throw err;
+	fs.appendFile("./log.txt", "\n_____________________________\n" + "Command: spotify-this-song " + song + "\n", function(error) {
+        if (error) throw error;
         else {
-            console.log("Song Command logged");
+            console.log("Spotify Command logged");
         }
     });
 
-    if (song === "") {
-        var spotifySearch = "The Sign of Base";
-    } else {
-        spotifySearch = song;
-        return;
-    }
-    spotify.search({type: "track", query: spotifySearch}, function(err, response) {
-        if (err) {
+     //Initialize Spotify 
+     var spotify = new Spotify(keys.spotify);
+
+    spotify.search({ type: 'track', query: song}, function(error, response) {
+        if (error) {
             console.log("Sorry! Could not retrieve the track.");
           } else {
               console.log("Spotify response: " + response);
@@ -94,11 +99,12 @@ function getSong() {
                                     "Artist: " + songInfo.artists[0].name + "\n" + 
                                     "Album: " + songInfo.album.name + "\n" + 
                                     "Preview Here: " + songInfo.preview_url + "\n";
+
             // Append the output to the log file
-            fs.appendFile("./log.txt", "Response: " + output + "\n", function(err) {
-                if (err) throw err;
+            fs.appendFile("./log.txt", "Response: " + output + "\n", function(error) {
+                if (error) throw error;
                 else {
-                    console.log("Song Response logged" + "\n_____________________________\n");
+                    console.log("Spotify Response logged" + "\n_____________________________\n");
                 }
           })
         }
@@ -106,9 +112,8 @@ function getSong() {
     
 }
 
-// node liri.js movie-this '<movie name here>'
 // This will show information about the movie in the terminal/bash window
-function getMovie() {
+function getMovie(movieName) {
     // Create an empty variable for holding the movie name
     var movieName = "";
     
@@ -128,8 +133,8 @@ function getMovie() {
     }
 
      // Append the command to the log file
-	fs.appendFile("./log.txt", "\n_____________________________\n" + "Command: movie-this " + movieName + "\n", function(err) {
-        if (err) throw err;
+	fs.appendFile("./log.txt", "\n_____________________________\n" + "Command: movie-this " + movieName + "\n", function(error) {
+        if (error) throw error;
         else {
             console.log("Movie Command logged");
            // console.log("Movie Name: " + movieName);
@@ -160,8 +165,8 @@ function getMovie() {
                 console.log(output)
                 }
 
-    fs.appendFile("./log.txt", "Response: " + output + "\n", function(err) {
-        if (err) throw err;
+    fs.appendFile("./log.txt", "Response: " + output + "\n", function(error) {
+        if (error) throw error;
         else {
             console.log("Movie Response logged" + "\n_____________________________\n");
         }
@@ -169,31 +174,44 @@ function getMovie() {
 });
 }
 
-// node liri.js do-what-it-says
-// Using the fs Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
-// It should run spotify-this-song for "I Want it That Way," as follows the text in random.txt.
-// Feel free to change the text in that document to test out the feature for other commands.
+// It will run spotify-this-song for "I Want it That Way," as follows the text in random.txt.
 function doIt() {
-    console.log("Command: " + command);
-
-     // Append the command to the log file
-	fs.appendFile("./log.txt", "User Command: node liri.js do-what-it-says\n\n", function(err) {
-        if (err) throw err;
+         // Append the command to the log file
+	fs.appendFile("./log.txt", "\n_____________________________\n" + "Command: do-what-it-says \n", function(error) {
+        if (error) throw error;
         else {
-            console.log("Command logged");
+            console.log("Do What It Says Command logged");
         }
     });
 
     //Read the random.txt file and run the command
-    fs.readFile("./random.txt", "utf8", function(err, data) {
-        if (err) throw err;
+    fs.readFile("./random.txt", "utf8", function(error, data) {
+        if (error) throw error;
     else {
-        var command = data;
+        console.log("Random text: " + data);
+        var text = data.split(',');
+		var command = text[0].trim();
+		var movieOrSong = text[1].trim();
+    
+    switch(command) {
+        case 'my-tweets':
+            getTweets(); 
+            break;
+
+        case 'spotify-this-song':
+            getSong(movieOrSong);
+            break;
+
+        case 'movie-this':
+            getMovie(movieOrSong);
+            break;
+    }
     }
     })    
 }
 
-// Run the commands
+// Check which command is being input and call the corresponding function
+function run() {
 if (command[2] === "my-tweets") {
 	getTweets(); 
 
@@ -208,20 +226,24 @@ if (command[2] === "my-tweets") {
 
 } else {
 	// Append the command to the log file
-	fs.appendFile('./log.txt', 'User Command: ' + command + '\n\n', function(err) {
-		if (err) throw err;
-
+	fs.appendFile("./log.txt", "Command: unrecognized " + "\n", function(error) {
+		if (error) throw error;
+        console.log("Unrecognized command");
 		// If the user types in something other than a command, provide a list of instructions
-		commandList = 'Command List:\n' + 
-				   '    node liri.js my-tweets\n' + 
-				   '    node liri.js spotify-this-song "<song_name>"\n' + 
-				   '    node liri.js movie-this "<movie_name>"\n' + 
-				   '    node liri.js do-what-it-says\n';
+		commandList = "Command List:\n" + 
+				   "    node liri.js my-tweets\n" + 
+				   "    node liri.js spotify-this-song '<song_name>'\n" + 
+				   "    node liri.js movie-this '<movie_name>'\n" + 
+				   "    node liri.js do-what-it-says\n";
 
 		// Append the output to the log file
-		fs.appendFile('./log.txt', 'LIRI Response:\n\n' + commandList + '\n', function(err) {
-			if (err) throw err;
+		fs.appendFile("./log.txt", "Response: " + commandList +"\n", function(error) {
+			if (error) throw error;
 			console.log(commandList);
 		});
 	});
 }
+};
+
+//Calls the run function
+run();
