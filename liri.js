@@ -57,7 +57,7 @@ function getTweets() {
 }
 
 // This will show information about the song in the terminal/bash window
-function getSong(query) {
+function getSong(song) {
      // Create an empty variable for holding the song name
      var song = "";
     
@@ -189,23 +189,10 @@ function doIt() {
     else {
         console.log("Random text: " + data);
         var text = data.split(',');
-		var command = text[0].trim();
-		var movieOrSong = text[1].trim();
+		var song = text[1].trim();
     
-    switch(command) {
-        case 'my-tweets':
-            getTweets(); 
-            break;
-
-        case 'spotify-this-song':
-            getSong(movieOrSong);
-            break;
-
-        case 'movie-this':
-            getMovie(movieOrSong);
-            break;
-    }
-    }
+            getSong(song);
+        }
     })    
 }
 

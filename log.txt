@@ -1,0 +1,94 @@
+Command: unrecognized 
+Response: Command List:
+    node liri.js my-tweets
+    node liri.js spotify-this-song '<song_name>'
+    node liri.js movie-this '<movie_name>'
+    node liri.js do-what-it-says
+
+
+_____________________________
+Command: my-tweets
+Response: Most Recent Tweets: 
+Tweet: RT @SenatorCantwell: Every student in America should be taught the tools they need to enter our 21st century economy. In Washington state,…
+Created: Sun Aug 12 00:12:45 +0000 2018
+------------------------
+Tweet: RT @jakevdp: The single best thing you can do when asking for coding help online is provide a short, complete example script that others ca…
+Created: Sun Aug 12 00:11:56 +0000 2018
+------------------------
+Tweet: RT @lfosgett: To those learning code and pursuing hobby coding projects on the side: how do you balance your projects and "real life"? What…
+Created: Sun Aug 12 00:11:40 +0000 2018
+------------------------
+Tweet: RT @thecodinglove: When we desperately try to fix a bug in production https://t.co/4qXDXf8Ta9
+Created: Sun Aug 12 00:10:00 +0000 2018
+------------------------
+Tweet: The Duke Gardens is amazing this time of year!
+Created: Sun Aug 12 00:08:20 +0000 2018
+------------------------
+Tweet: Wednesday, we meet again.
+Created: Thu Aug 09 01:03:39 +0000 2018
+------------------------
+
+
+_____________________________
+Command: spotify-this-song The Sign Ace of Base
+Response: Song Information:
+Song Name: The Sign
+Artist: Ace of Base
+Album: The Sign (US Album) [Remastered]
+Preview Here: https://p.scdn.co/mp3-preview/4c463359f67dd3546db7294d236dd0ae991882ff?cid=c3d070aec97a4e479d2d7b3e7b37c94b
+
+
+_____________________________
+Command: spotify-this-song superbass+nicki+minaj
+Response: Song Information:
+Song Name: Superbass (Made Famous By Nicki Minaj)
+Artist: Ultimate Pop Hits
+Album: Got Hits, Vol. 1
+Preview Here: https://p.scdn.co/mp3-preview/8fab9ff4a1af11f27eed3c4259636924fc61ef0e?cid=c3d070aec97a4e479d2d7b3e7b37c94b
+
+
+_____________________________
+Command: movie-this mr+nobody
+Response: Title: Mr. Nobody
+Year: 2009
+IMDB Rating: 7.9
+Rotten Tomatoes Rating: 66%
+Country: Belgium, Germany, Canada, France, USA, UK
+Language: English, Mohawk
+Plot: A boy stands on a station platform as a train is about to leave. Should he go with his mother or stay with his father? Infinite possibilities arise from this decision. As long as he doesn't choose, anything is possible.
+Actors: Jared Leto, Sarah Polley, Diane Kruger, Linh Dan Pham
+
+_____________________________
+Command: movie-this i+am+legend
+Response: Title: I Am Legend
+Year: 2007
+IMDB Rating: 7.2
+Rotten Tomatoes Rating: 69%
+Country: USA
+Language: English
+Plot: Years after a plague kills most of humanity and transforms the rest into monsters, the sole survivor in New York City struggles valiantly to find a cure.
+Actors: Will Smith, Alice Braga, Charlie Tahan, Salli Richardson-Whitfield
+
+_____________________________
+Command: do-what-it-says 
+
+_____________________________
+Command: spotify-this-song The Sign Ace of Base
+Response: Song Information:
+Song Name: The Sign
+Artist: Ace of Base
+Album: The Sign (US Album) [Remastered]
+Preview Here: https://p.scdn.co/mp3-preview/4c463359f67dd3546db7294d236dd0ae991882ff?cid=c3d070aec97a4e479d2d7b3e7b37c94b
+
+
+_____________________________
+Command: do-what-it-says 
+
+_____________________________
+Command: spotify-this-song The Sign Ace of Base
+Response: Song Information:
+Song Name: The Sign
+Artist: Ace of Base
+Album: The Sign (US Album) [Remastered]
+Preview Here: https://p.scdn.co/mp3-preview/4c463359f67dd3546db7294d236dd0ae991882ff?cid=c3d070aec97a4e479d2d7b3e7b37c94b
+
